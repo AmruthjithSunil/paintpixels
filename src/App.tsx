@@ -14,11 +14,12 @@ function App() {
   function clickHandler(id: number) {
     return function () {
       setCanvas((canvas) => {
+        const newCanvas = [...canvas];
         console.log(id);
         let j = id % 10;
         let i = (id - j) / 10;
-        canvas[i][j].color = "white";
-        return canvas;
+        newCanvas[i][j].color = "white";
+        return newCanvas;
       });
     };
   }
