@@ -9,8 +9,8 @@ function App() {
       setCanvas((canvas) => {
         const newCanvas = [...canvas];
         console.log(id);
-        let j = id % 10;
-        let i = (id - j) / 10;
+        let j = id % 12;
+        let i = (id - j) / 12;
         newCanvas[i][j].color = "white";
         return newCanvas;
       });
