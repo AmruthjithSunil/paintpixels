@@ -19,8 +19,8 @@ export default function Canvas({ canvas, clickHandler }: CanvasProps) {
               key={unit.id}
               style={{
                 background: unit.color,
-                width: "40px",
-                height: "40px",
+                width: "32px",
+                height: "32px",
                 border: "dotted",
                 borderWidth: "1px",
                 borderColor: "#0004",
