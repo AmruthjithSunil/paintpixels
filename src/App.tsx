@@ -5,20 +5,45 @@ import Canvas from "./Components/Canvas";
 import Palette from "./Components/Palette";
 import Color from "./Components/Color";
 
+interface UndoHistory {
+  i: number;
+  j: number;
+  color: string;
+}
+
 function App() {
   const [canvas, setCanvas] = useState(initCanvas);
   const [color, setColor] = useState("white");
+  const [undo, setUndo] = useState<UndoHistory[]>([]);
   function clickHandler(id: number) {
     return function () {
+      const j = id % 12;
+      const i = (id - j) / 12;
+      const lastColor = canvas[i][j].color;
+      setUndo((undo) => {
+        const newUndo = [...undo];
+        newUndo.push({ i, j, color: lastColor });
+        return newUndo;
+      });
       setCanvas((canvas) => {
         const newCanvas = [...canvas];
-        console.log(id);
-        let j = id % 12;
-        let i = (id - j) / 12;
         newCanvas[i][j].color = color;
         return newCanvas;
       });
     };
+  }
+  function undoHandler() {
+    setCanvas((canvas) => {
+      const newCanvas = [...canvas];
+      const lastUndo = undo[undo.length - 1];
+      newCanvas[lastUndo.i][lastUndo.j].color = lastUndo.color;
+      return newCanvas;
+    });
+    setUndo((undo) => {
+      const newUndo = [...undo];
+      newUndo.pop();
+      return newUndo;
+    });
   }
   async function download() {
     const canvasElement = document.querySelector(".canvas") as HTMLElement;
@@ -31,8 +56,8 @@ function App() {
       link.click();
     }
   }
-  function colorChange(e: any) {
-    console.log(e);
+  function colorChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setColor(e.target.value);
   }
 
   return (
@@ -47,6 +72,7 @@ function App() {
       <div className="canvas" style={{ display: "inline-block" }}>
         <Canvas canvas={canvas} clickHandler={clickHandler} />
       </div>
+      {undo.length > 0 && <button onClick={undoHandler}>Undo</button>}
       <Palette setColor={setColor} />
       <div style={{ display: "flex" }}>
         <Color setColor={setColor}>{color}</Color>
