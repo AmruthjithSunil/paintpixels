@@ -3,6 +3,7 @@ import { useState } from "react";
 import { initCanvas } from "./util";
 import Canvas from "./Components/Canvas";
 import Palette from "./Components/Palette";
+import Color from "./Components/Color";
 
 function App() {
   const [canvas, setCanvas] = useState(initCanvas);
@@ -30,14 +31,27 @@ function App() {
       link.click();
     }
   }
+  function colorChange(e) {
+    console.log(e);
+  }
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <h1>#PaintPixels</h1>
       <div className="canvas" style={{ display: "inline-block" }}>
         <Canvas canvas={canvas} clickHandler={clickHandler} />
       </div>
       <Palette setColor={setColor} />
+      <div style={{ display: "flex" }}>
+        <Color setColor={setColor}>{color}</Color>
+        <input type="text" value={color} onChange={colorChange} />
+      </div>
       <button onClick={download}>Download Image</button>
     </div>
   );
