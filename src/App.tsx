@@ -20,12 +20,15 @@ function App() {
     };
   }
   async function download() {
-    const canvas = await html2canvas(document.querySelector(".canvas"));
-    const imgData = canvas.toDataURL("img/png");
-    const link = document.createElement("a");
-    link.href = imgData;
-    link.download = "canvas.png";
-    link.click();
+    const canvasElement = document.querySelector(".canvas") as HTMLElement;
+    if (canvasElement) {
+      const canvas = await html2canvas(canvasElement);
+      const imgData = canvas.toDataURL("img/png");
+      const link = document.createElement("a");
+      link.href = imgData;
+      link.download = "canvas.png";
+      link.click();
+    }
   }
 
   return (
