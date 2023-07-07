@@ -1,3 +1,4 @@
+import html2canvas from "html2canvas";
 import { useState } from "react";
 import { initCanvas } from "./util";
 import Canvas from "./Components/Canvas";
@@ -18,12 +19,23 @@ function App() {
       });
     };
   }
+  async function download() {
+    const canvas = await html2canvas(document.querySelector(".canvas"));
+    const imgData = canvas.toDataURL("img/png");
+    const link = document.createElement("a");
+    link.href = imgData;
+    link.download = "canvas.png";
+    link.click();
+  }
 
   return (
     <div>
       <h1>#PaintPixels</h1>
-      <Canvas canvas={canvas} clickHandler={clickHandler} />
+      <div className="canvas" style={{ display: "inline-block" }}>
+        <Canvas canvas={canvas} clickHandler={clickHandler} />
+      </div>
       <Palette setColor={setColor} />
+      <button onClick={download}>Download Image</button>
     </div>
   );
 }
