@@ -31,7 +31,7 @@ function App() {
       link.click();
     }
   }
-  function colorChange(e) {
+  function colorChange(e: any) {
     console.log(e);
   }
 
